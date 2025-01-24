@@ -1,0 +1,6 @@
+{'player': 2, 'name': 'tjutuju', 'victory': 0, 'defeat': 0, 'nb_game_played': 0}
+{'player': 1, 'name': 'tutuj', 'victory': 0, 'defeat': 0, 'nb_game_played': 0}
+{'player': 0, 'name': 'tiutiuiu', 'victory': 0, 'defeat': 0, 'nb_game_played': 0}
+
+
+
