@@ -1,0 +1,20 @@
+{
+    "Nans": {
+        "name": "Nans",
+        "victory": 5,
+        "defeat": 3,
+        "nb_game_played": 8
+    },
+    "Tigricrou": {
+        "name": "Tigricrou",
+        "victory": 7,
+        "defeat": 1,
+        "nb_game_played": 8
+    },
+    "Margaux": {
+        "name": "Margaux",
+        "victory": 2,
+        "defeat": 0,
+        "nb_game_played": 2
+    }
+}
