@@ -37,46 +37,41 @@ def reset_history():
 
 
 def get_user(user):
-    """Récupère un utilisateur dans scores.txt ou le crée s'il n'existe pas."""
+    """Select an user in scores.txt or add a new one."""
 
     name = next(iter(user))
     try:
-        # Lire le fichier scores.txt
         with open("scores.txt", "r") as f:
             users = json.load(f)
     except FileNotFoundError:
-        # Si le fichier n'existe pas, on initialise un dictionnaire vide
+        # add an empty dictionnarie if the file doesn't exist
         users = {}
 
-    # Vérifier si l'utilisateur existe
+    # Verify the user is existant
     if name in users:
         return users[name]
 
-    # Si l'utilisateur n'existe pas, le créer
+    # creat new user if it inexistant
     users.update(user) 
 
-    # Écrire la mise à jour dans le fichier
     with open("scores.txt", "w") as f:
         json.dump(users, f, indent=4)
 
     return users[name]
 
 def write_user_score(name, user):
-    """Met à jour les données d'un utilisateur en ajoutant une victoire ou une défaite."""
+    """Refresh user score by adding a victory or a defeat."""
     try:
-        # Lire le fichier scores.txt
         with open("scores.txt", "r") as f:
             users = json.load(f)
     except FileNotFoundError:
-        raise Exception("Le fichier scores.txt est introuvable.")
+        raise Exception("The file scores.txt is inexistant.")
 
-    # Vérifier si l'utilisateur existe
     if name not in users:
-        raise Exception(f"L'utilisateur {name} n'existe pas.")
+        raise Exception(f"User {name} is inexistant.")
 
     users[name] = user
 
-    # Écrire la mise à jour dans le fichier
     with open("scores.txt", "w") as f:
         json.dump(users, f, indent=4)
 
@@ -93,7 +88,7 @@ def export_txt(history):
 
 
 def display_score():
-    # tableau des scores trié du 1er sur le nb de victoire, afficher le ratio a cote
+    # display the score table with also the ratio
     try:
         with open("scores.txt", "r") as f:
             scores = json.load(f)
@@ -109,7 +104,3 @@ def clear_score():
     except FileNotFoundError:
         print("File is inexistant! ")
         
-
-name="Nans"
-user="Nans"
-write_user_score(name, user)
