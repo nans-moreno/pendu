@@ -40,19 +40,17 @@ class RenderGame: #Gère tout ce qui concerne l'affichage
     def draw_score_screen(self):
         scores = display_score()
         
-        # Trier les scores par nombre de victoires décroissant
-        sorted_scores = sorted(scores.values(), key=lambda x: x["victory"], reverse=True)
+        sorted_scores = sorted(scores.values(), key=lambda x: x["victory"], reverse=True) #Trier les scores par nombre de victoires décroissant
         
-        # Effacer l'écran et afficher le titre
         self.screen.fill(self.white)
         self.draw_text("Score", 20, 20, self.black)
         
-        # Afficher les scores triés
-        y_offset = 150  # Position verticale initiale
+        #Afficher les scores triés
+        y_offset = 150  #Position verticale initiale
         for player in sorted_scores:
             score_text = f"{player['name']}: {player['victory']} victoires, {player['defeat']} défaites, {player['nb_game_played']} parties jouées"
             self.draw_text(score_text, 100, y_offset, self.black)
-            y_offset += 30  # Augmente l'espacement entre les lignes
+            y_offset += 30  #Augmente l'espacement entre les lignes
 
  
 
@@ -72,14 +70,12 @@ class RenderGame: #Gère tout ce qui concerne l'affichage
 
 
     def draw_add_word_screen(self, current_word):
-        """Dessine l'écran pour ajouter un mot."""
         self.screen.fill(self.white)
         self.draw_text("Ajouter un mot", 300, 50, self.black)
         self.draw_text(f"Mot actuel : {current_word}", 200, 200, self.blue)
         self.draw_text("Appuyez sur Entrée pour valider", 200, 400, self.red)
 
     def draw_enter_name_screen(self, current_name):
-        """Dessine l'écran pour demander le nom du joueur."""
         self.screen.fill(self.white)
         self.draw_text("Entrez votre nom", 300, 50, self.black)
         self.draw_text(f"Nom actuel : {current_name}", 200, 200, self.blue)
@@ -122,25 +118,23 @@ class RenderGame: #Gère tout ce qui concerne l'affichage
     def handle_mouse_click(self, pos):
       for key in self.keyboard:
           if key["rect"].collidepoint(pos) and not key["clicked"]:
-              key["clicked"] = True  # Marquer le bouton comme cliqué
+              key["clicked"] = True  #Marquer le bouton comme cliqué
               return key.get("letter")
 
     def draw_text(self, text, x, y, color):
-        """Dessine du texte sur l'écran."""
         label = self.font.render(text, True, color)
         self.screen.blit(label, (x, y))
 
     def draw_hangman(self, attempts):
-        """Dessine le pendu selon le nombre d'erreurs."""
         for i in range(attempts):
             part = self.hangman_parts[i]
-            if i < 3:  # Dessiner des rectangles (base, poteaux)
+            if i < 3:  #Rectangles (base, poteaux)
                 pygame.draw.rect(self.screen, self.black, part)
-            elif i == 3:  # Dessiner la corde (ligne)
+            elif i == 3:  #Corde (ligne)
                 pygame.draw.line(self.screen, self.black, part[0], part[1], 2)
-            elif i == 4:  # Dessiner la tête (cercle)
+            elif i == 4:  #Tête (cercle)
                 pygame.draw.circle(self.screen, self.black, (part[0], part[1]), part[2], 2)
-            elif i >= 5:  # Dessiner les lignes (corps, bras, jambes)
+            elif i >= 5:  #Lignes (corps, bras, jambes)
                 pygame.draw.line(self.screen, self.black, part[0], part[1], 2)
 
 
@@ -151,7 +145,6 @@ class RenderGame: #Gère tout ce qui concerne l'affichage
         return display_word
 
     def draw_keyboard(self):
-        """Dessine le clavier virtuel à l'écran."""
         for key in self.keyboard:
             color = self.blue if key["clicked"] else self.black
             pygame.draw.rect(self.screen, color, key["rect"], 2)
@@ -161,7 +154,7 @@ class RenderGame: #Gère tout ce qui concerne l'affichage
 
         
 class HangmanGame: #Contient les règles du jeu et le run
-    _game_instance = None  # Design pattern Singleton permet d'avoir une seule instance de jeu même si on lance deux fois la classe
+    _game_instance = None  #Design pattern Singleton permet d'avoir une seule instance de jeu même si on lance deux fois la classe
 
     def __new__(cls, *args, **kwargs):
         if cls._game_instance is None:
@@ -229,16 +222,16 @@ class HangmanGame: #Contient les règles du jeu et le run
                     if event.type == pygame.QUIT:
                         running = False
                     elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_RETURN:  # Valider le nom du joueur
+                        if event.key == pygame.K_RETURN:
                             if current_name.strip():
                                 self.player[current_name] = {"name": current_name, "victory": 0, "defeat": 0, "nb_game_played": 0}
                                 self.player = get_user(self.player)
 
                                 current_name = ""
                                 self.state = "hangman_game"
-                        elif event.key == pygame.K_BACKSPACE:  # Supprimer une lettre
+                        elif event.key == pygame.K_BACKSPACE:
                             current_name = current_name[:-1]
-                        elif event.unicode.isalpha():  # Ajouter une lettre
+                        elif event.unicode.isalpha():
                             current_name += event.unicode
 
             elif self.state == "hangman_game":
@@ -306,15 +299,15 @@ class HangmanGame: #Contient les règles du jeu et le run
                         self.render_game.draw_menu_screen()
 
                     elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_RETURN:  # Valider le mot saisi
-                            if current_word.strip():  # Assurez-vous que le mot n'est pas vide
+                        if event.key == pygame.K_RETURN:
+                            if current_word.strip():
                                 self.word_to_guess = current_word.lower()
                                 enter_new_word(current_word.lower())
-                                current_word = ""  # Réinitialiser après validation
+                                current_word = ""  #Réinitialiser après validation
                                 self.state = "menu"
-                        elif event.key == pygame.K_BACKSPACE:  # Supprimer une lettre
+                        elif event.key == pygame.K_BACKSPACE:
                             current_word = current_word[:-1]
-                        elif event.unicode.isalpha():  # Ajouter une lettre
+                        elif event.unicode.isalpha():
                             current_word += event.unicode
 
 

@@ -41,21 +41,16 @@ def get_user(user):
 
     name = next(iter(user))
     try:
-        # Lire le fichier scores.txt
         with open("scores.txt", "r") as f:
             users = json.load(f)
     except FileNotFoundError:
-        # Si le fichier n'existe pas, on initialise un dictionnaire vide
         users = {}
 
-    # Vérifier si l'utilisateur existe
     if name in users:
         return users[name]
 
-    # Si l'utilisateur n'existe pas, le créer
     users.update(user) 
 
-    # Écrire la mise à jour dans le fichier
     with open("scores.txt", "w") as f:
         json.dump(users, f, indent=4)
 
@@ -64,19 +59,16 @@ def get_user(user):
 def write_user_score(name, user):
     """Met à jour les données d'un utilisateur en ajoutant une victoire ou une défaite."""
     try:
-        # Lire le fichier scores.txt
         with open("scores.txt", "r") as f:
             users = json.load(f)
     except FileNotFoundError:
         raise Exception("Le fichier scores.txt est introuvable.")
 
-    # Vérifier si l'utilisateur existe
     if name not in users:
         raise Exception(f"L'utilisateur {name} n'existe pas.")
 
     users[name] = user
 
-    # Écrire la mise à jour dans le fichier
     with open("scores.txt", "w") as f:
         json.dump(users, f, indent=4)
 
@@ -93,7 +85,7 @@ def export_txt(history):
 
 
 def display_score():
-    # tableau des scores trié du 1er sur le nb de victoire, afficher le ratio a cote
+    #Tableau des scores trié du 1er sur le nb de victoire, afficher le ratio a cote
     try:
         with open("scores.txt", "r") as f:
             scores = json.load(f)
